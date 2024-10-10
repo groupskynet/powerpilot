@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  powerpilot:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      args:
+        - port=8000
+    image: powerpilot
+    container_name: powerpilot 
+    restart: unless-stopped
+    volumes:
+      - ./:/app
+    ports: 
+      - 8000:80
+    networks:
+      - powerpilot 
+networks:
+    powerpilot:
