@@ -2,11 +2,13 @@ services:
   postgres:
     image: postgres
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - ./docker-compose/postgeres:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: powerpilot
       POSTGRES_USER: powerpilot
       POSTGRES_PASSWORD: iPorGUNTrapa
+    ports:
+        - 5432:5432
     networks:
       - powerpilot
   powerpilot:
