@@ -1,5 +1,15 @@
 version: '3.8'
 services:
+  postgres:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: powerpilot
+      POSTGRES_USER: powerpilot
+      POSTGRES_PASSWORD: iPorGUNTrapa
+    networks:
+      - powerpilot
   powerpilot:
     build:
       context: ./
@@ -7,13 +17,13 @@ services:
       args:
         - port=8000
     image: powerpilot
-    container_name: powerpilot 
+    container_name: powerpilot
     restart: unless-stopped
     volumes:
       - ./:/app
-    ports: 
+    ports:
       - 8000:80
     networks:
-      - powerpilot 
+      - powerpilot
 networks:
     powerpilot:
