@@ -11,6 +11,13 @@ services:
         - 5432:5432
     networks:
       - powerpilot
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d postgres" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    command: /bin/bash -c "until pg_isready -U powerpilot -p 5432; do sleep 1; done; psql -U powerpilot -c 'CREATE DATABASE powerpilot;'"
   powerpilot:
     build:
       context: ./
