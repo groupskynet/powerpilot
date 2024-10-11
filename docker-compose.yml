@@ -1,23 +1,4 @@
 services:
-  postgres:
-    image: postgres
-    volumes:
-      - ./docker-compose/postgeres:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: powerpilot
-      POSTGRES_USER: powerpilot
-      POSTGRES_PASSWORD: iPorGUNTrapa
-    ports:
-        - 5432:5432
-    networks:
-      - powerpilot
-    restart: unless-stopped
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -d postgres" ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-    command: /bin/bash -c "until pg_isready -U powerpilot -p 5432; do sleep 1; done; psql -U powerpilot -c 'CREATE DATABASE powerpilot;'"
   powerpilot:
     build:
       context: ./
@@ -31,6 +12,21 @@ services:
       - ./:/app
     ports:
       - 8000:80
+    networks:
+      - powerpilot
+  mysql:
+    image: mysql:latest
+    container_name: powerpilot-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: powerpilot
+      MYSQL_USER: powerpilot
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: admin.root
+    ports:
+      - 33068:3306
+    volumes:
+      - ./docker-compose/mysql:/var/lib/mysql
     networks:
       - powerpilot
 networks:
