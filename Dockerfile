@@ -3,6 +3,7 @@ FROM php:8.2
 RUN apt-get update && apt-get install -y \
     git \
     curl \
+    libpq-dev \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
@@ -17,7 +18,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo_pgsql mbstring exif pcntl bcmath gd zip
+RUN docker-php-ext-install pgsql pdo pdo_pgsql mbstring exif pcntl bcmath gd zip
 
 WORKDIR /app
 COPY . /app
